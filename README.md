@@ -315,7 +315,7 @@ MEDIA_URL = '/media/'MEDIA_ROOT = BASE_DIR / 'media'
 
 ⚙️ Installation
 1. Clone the Repository
-git clone https://github.com/YOUR_USERNAME/BSL_project.git
+git clone https://github.com/KUMAR ARYAN/BSL_project.git
 
 cd BSL_project
 
@@ -449,25 +449,6 @@ Django Forms
 Django Signals
 Git
 GitHub
-
-📷 Screenshots
-Create a section like this after uploading screenshots to your repository:
-## 📷 Screenshots
-
-### Home Page
-![Home Page](media/screenshots/home.png)
-
-### Login Page
-![Login Page](media/screenshots/login.png)
-
-### Registration Page
-![Registration Page](media/screenshots/register.png)
-
-### Employee Dashboard
-![Dashboard](media/screenshots/dashboard.png)
-
-### Meter Reading Submission
-![Meter Submission](media/screenshots/meter-submission.png)
 
 👨‍💻 Developer
 KUMAR ARYAN
