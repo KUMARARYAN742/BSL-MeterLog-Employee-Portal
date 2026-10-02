@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Bokaro Steel Plant — Employee Portal for meter readings, services, and more." />
+    <title>{% block title %}BSL Portal{% endblock %} — Bokaro Steel Plant</title>
+    <link rel="icon" type="image/png" href="https://uxdt.nic.in/wp-content/uploads/2020/06/Sail.jpg?x38773" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <!-- ── Navbar ── -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="{% url 'home' %}" class="logo">
+          <img
+            src="https://uxdt.nic.in/wp-content/uploads/2020/06/Sail.jpg?x38773"
+            alt="SAIL Logo"
+          />
+          <span class="logo-divider"></span>
+          Bokaro Steel Plant
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="nav-menu">
+          <ul>
+            <li><a href="{% url 'home' %}" class="{% block nav_home %}{% endblock %}">Home</a></li>
+            <li><a href="#" class="{% block nav_services %}{% endblock %}">Services</a></li>
+            <li><a href="#" class="{% block nav_employee %}{% endblock %}">Employee Corner</a></li>
+            <li><a href="#" class="{% block nav_cprs %}{% endblock %}">CPRS</a></li>
+            <li><a href="#" class="{% block nav_contact %}{% endblock %}">Contact</a></li>
+          </ul>
+
+          <!-- Mobile-only nav actions (cloned inside nav for mobile layout) -->
+          <div class="nav-actions mobile-nav-actions">
+            {% block mobile_nav_actions %}
+              {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-nav btn-nav--outline">Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn-nav btn-nav--danger">Logout</a>
+              {% else %}
+                <a href="{% url 'login' %}" class="btn-nav">Login</a>
+                <a href="{% url 'register' %}" class="btn-nav btn-nav--outline">Sign Up</a>
+              {% endif %}
+            {% endblock %}
+          </div>
+        </nav>
+
+        <!-- Desktop nav actions -->
+        <div class="nav-actions desktop-nav-actions">
+          {% block nav_actions %}
+            {% if user.is_authenticated %}
+              <a href="{% url 'dashboard' %}" class="btn-nav btn-nav--outline">Dashboard</a>
+              <a href="{% url 'logout' %}" class="btn-nav btn-nav--danger">Logout</a>
+            {% else %}
+              <div class="dropdown">
+                <button class="btn-nav">Login ▾</button>
+                <div class="dropdown-content">
+                  <a href="{% url 'admin:login' %}">🔐 Admin Login</a>
+                  <a href="{% url 'login' %}">👤 User Login</a>
+                </div>
+              </div>
+              <a href="{% url 'register' %}" class="btn-nav btn-nav--outline">Sign Up</a>
+            {% endif %}
+          {% endblock %}
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Django Messages ── -->
+    {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          <span>{{ message }}</span>
+          <button class="alert-close" onclick="this.parentElement.remove()">✕</button>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ── Main Content ── -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- ── Footer ── -->
+    {% block footer %}
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img
+              src="https://uxdt.nic.in/wp-content/uploads/2020/06/Sail.jpg?x38773"
+              alt="SAIL Logo"
+            />
+            Bokaro Steel Plant
+          </div>
+          <p>
+            One of India's largest integrated steel plants, committed to
+            excellence in steel production, employee welfare, and sustainable
+            development since 1964.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'home' %}">→ Home</a></li>
+            <li><a href="#">→ Services</a></li>
+            <li><a href="#">→ Employee Corner</a></li>
+            <li><a href="#">→ CPRS</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="{% url 'login' %}">→ Employee Login</a></li>
+            <li><a href="{% url 'register' %}">→ Register</a></li>
+            <li><a href="{% url 'admin:login' %}">→ Admin Portal</a></li>
+            <li><a href="#">→ Help & Support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <div class="contact-item">
+            <span class="contact-icon">📧</span>
+            <span>contact@bokarosteel.com</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📞</span>
+            <span>+91 654 224 0000</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <span>Bokaro Steel City,<br/>Jharkhand 827001, India</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+          <p>© 2024 Bokaro Steel Plant (SAIL). All rights reserved.</p>
+          <p>An initiative of Steel Authority of India Limited</p>
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+
+    <!-- ── Mobile Nav Script ── -->
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('nav-menu');
+
+      if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        navMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+          });
+        });
+      }
+
+      // Auto-dismiss alerts after 5 seconds
+      document.querySelectorAll('.alert').forEach(alert => {
+        setTimeout(() => {
+          alert.style.opacity = '0';
+          alert.style.transform = 'translateY(-10px)';
+          alert.style.transition = 'all 0.3s ease';
+          setTimeout(() => alert.remove(), 300);
+        }, 5000);
+      });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

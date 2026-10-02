@@ -1,0 +1,362 @@
+/* ============================================================
+   Sign Up Page — BSL Project
+   ============================================================ */
+
+.signup-wrapper {
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+    background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-gray-100) 100%);
+}
+
+.signup-card {
+    max-width: 680px;
+    width: 100%;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl);
+    box-shadow: var(--shadow-xl);
+    animation: fadeInUp 0.6s ease;
+}
+
+/* ── Header ── */
+.signup-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.header-badge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(0, 180, 216, 0.1);
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    border-radius: var(--radius-full);
+    color: var(--color-teal-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+}
+
+.signup-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-navy);
+    line-height: 1.2;
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.02em;
+}
+
+.signup-header .highlight {
+    background: linear-gradient(135deg, var(--color-teal), var(--color-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.signup-header p {
+    font-size: 0.9rem;
+    color: var(--color-gray-500);
+    margin: 0;
+}
+
+/* ── Step Indicator ── */
+.step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: var(--space-2xl);
+    padding: 0 var(--space-xl);
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 2px solid var(--color-gray-300);
+    color: var(--color-gray-400);
+    background: var(--color-white);
+    transition: all var(--transition-base);
+}
+
+.step.active .step-circle {
+    background: linear-gradient(135deg, var(--color-teal), var(--color-teal-dark));
+    border-color: var(--color-teal);
+    color: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.15);
+}
+
+.step span:not(.step-circle) {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.step.active span:not(.step-circle) {
+    color: var(--color-teal-dark);
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--color-gray-200);
+    margin: 0 var(--space-sm);
+    margin-bottom: 18px;
+    max-width: 80px;
+    background: linear-gradient(90deg, var(--color-teal), var(--color-teal-dark));
+}
+
+/* ── Form Sections ── */
+.form-section {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-gray-100);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: var(--space-md);
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--color-navy);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* Form rows and groups */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.form-group {
+    margin-bottom: var(--space-md);
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-700);
+    margin-bottom: var(--space-sm);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: var(--space-md);
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Style Django-rendered form inputs */
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--color-gray-800);
+    background: var(--color-gray-50);
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    outline: none;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    border-color: var(--color-teal);
+    background: var(--color-white);
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+.input-wrapper input::placeholder {
+    color: var(--color-gray-400);
+}
+
+.input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-gray-400);
+    margin-top: var(--space-xs);
+}
+
+/* Error styling */
+.form-errors {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: var(--color-danger-light);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+    animation: shake 0.4s ease;
+}
+
+.form-errors .error-icon {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.form-errors p {
+    font-size: 0.85rem;
+    color: #b91c1c;
+    margin: 0;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-5px); }
+    75%      { transform: translateX(5px); }
+}
+
+/* Signup button */
+.btn-signup {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: 0.95rem;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-white);
+    background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-dark) 100%);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    letter-spacing: 0.02em;
+    margin-top: var(--space-md);
+}
+
+.btn-signup:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 180, 216, 0.3);
+}
+
+.btn-signup .btn-arrow {
+    transition: transform var(--transition-base);
+}
+
+.btn-signup:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* Form footer */
+.form-footer {
+    text-align: center;
+    margin-top: var(--space-xl);
+}
+
+.form-footer p {
+    font-size: 0.9rem;
+    color: var(--color-gray-500);
+    margin: 0;
+}
+
+.form-footer a {
+    color: var(--color-teal-dark);
+    font-weight: 700;
+    transition: color var(--transition-fast);
+}
+
+.form-footer a:hover {
+    color: var(--color-teal);
+}
+
+/* Override Django widget styling */
+.signup-card .form-group input[type="text"],
+.signup-card .form-group input[type="email"],
+.signup-card .form-group input[type="password"] {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--color-gray-800);
+    background: var(--color-gray-50);
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    outline: none;
+}
+
+.signup-card .form-group input:focus {
+    border-color: var(--color-teal);
+    background: var(--color-white);
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .signup-wrapper {
+        padding: var(--space-md);
+        align-items: flex-start;
+        padding-top: var(--space-lg);
+    }
+
+    .signup-card {
+        padding: var(--space-xl);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .step-indicator {
+        padding: 0;
+    }
+
+    .step span:not(.step-circle) {
+        display: none;
+    }
+}

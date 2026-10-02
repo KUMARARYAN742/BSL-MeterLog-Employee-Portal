@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}" />
+{% endblock %}
+
+{% block content %}
+<section class="signup-wrapper">
+  <div class="signup-card">
+    <!-- Header -->
+    <div class="signup-header">
+      <div class="header-badge">New Account</div>
+      <h2>Create Your<br/><span class="highlight">Employee Account</span></h2>
+      <p>Join the Bokaro Steel Plant digital portal for meter reading management.</p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+      <div class="step active">
+        <div class="step-circle">1</div>
+        <span>Identity</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-circle">2</div>
+        <span>Credentials</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-circle">3</div>
+        <span>Security</span>
+      </div>
+    </div>
+
+    <!-- Non-field errors -->
+    {% if form.non_field_errors %}
+    <div class="form-errors">
+      <div class="error-icon">⚠️</div>
+      <div>
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'register' %}">
+      {% csrf_token %}
+
+      <!-- Section: Identity -->
+      <div class="form-section">
+        <div class="section-label">
+          <span class="section-number">01</span>
+          <span>Employee Identity</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ form.staffno.id_for_label }}">BSL Staff No.</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🪪</span>
+              {{ form.staffno }}
+            </div>
+            {% if form.staffno.errors %}
+            <div class="text-danger">{{ form.staffno.errors }}</div>
+            {% endif %}
+            <span class="input-hint">6-digit BSL Staff Number</span>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              {{ form.username }}
+            </div>
+            {% if form.username.errors %}
+            <div class="text-danger">{{ form.username.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.email.id_for_label }}">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+          <div class="text-danger">{{ form.email.errors }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Section: Security -->
+      <div class="form-section">
+        <div class="section-label">
+          <span class="section-number">02</span>
+          <span>Security Credentials</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              {{ form.password1 }}
+            </div>
+            {% if form.password1.errors %}
+            <div class="text-danger">{{ form.password1.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔐</span>
+              {{ form.password2 }}
+            </div>
+            {% if form.password2.errors %}
+            <div class="text-danger">{{ form.password2.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-signup">
+        <span>Create Account</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+
+    <div class="form-footer">
+      <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

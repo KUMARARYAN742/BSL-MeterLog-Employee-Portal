@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+  <!-- Welcome Header -->
+  <div class="dashboard-header">
+    <div class="welcome-text">
+      <h1>Welcome back, <span class="username-highlight">{{ username }}</span></h1>
+      <p>Manage your electric meter readings and submissions from your personal dashboard.</p>
+    </div>
+    <div class="header-date">
+      <span class="date-icon">📅</span>
+      <span id="current-date"></span>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="dash-stat-card stat-teal">
+      <div class="stat-card-icon">📊</div>
+      <div class="stat-card-content">
+        <div class="stat-card-value">{{ meter_readings|length }}</div>
+        <div class="stat-card-label">Total Readings</div>
+      </div>
+    </div>
+    <div class="dash-stat-card stat-green">
+      <div class="stat-card-icon">⚡</div>
+      <div class="stat-card-content">
+        {% if meter_readings %}
+        <div class="stat-card-value">{{ meter_readings.0.meterreading }}</div>
+        {% else %}
+        <div class="stat-card-value">—</div>
+        {% endif %}
+        <div class="stat-card-label">Latest Reading</div>
+      </div>
+    </div>
+    <div class="dash-stat-card stat-gold">
+      <div class="stat-card-icon">✅</div>
+      <div class="stat-card-content">
+        <div class="stat-card-value">Active</div>
+        <div class="stat-card-label">Account Status</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meter Readings Table -->
+  <div class="table-section">
+    <div class="table-header">
+      <h2>📋 Your Meter Readings</h2>
+      <span class="table-count">{{ meter_readings|length }} records</span>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sl. No.</th>
+            <th>Quarter No.</th>
+            <th>Meter Reading</th>
+            <th>Meter Image</th>
+            <th>Submit Option</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reading in meter_readings %}
+          <tr>
+            <td><span class="cell-badge">{{ reading.slno }}</span></td>
+            <td>{{ reading.quarterno }}</td>
+            <td><strong>{{ reading.meterreading }}</strong></td>
+            <td>
+              <img
+                src="{{ reading.meterimage.url }}"
+                alt="Meter"
+                class="table-img"
+                onclick="this.classList.toggle('table-img-expanded')"
+              />
+            </td>
+            <td>
+              <span class="option-badge">{{ reading.submit_option }}</span>
+            </td>
+            <td class="date-cell">{{ reading.created_at|date:"M d, Y" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6">
+              <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h3>No Meter Readings Yet</h3>
+                <p>Submit your first meter reading using the form below to get started.</p>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Submit New Reading Form -->
+  <div class="form-section">
+    <div class="form-section-header">
+      <h2>⚡ Submit New Reading</h2>
+      <p>Fill in the details and upload a photo of your meter.</p>
+    </div>
+
+    {% if form.errors %}
+    <div class="form-errors">
+      <div class="error-icon">⚠️</div>
+      <div>
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <p><strong>{{ field }}:</strong> {{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="reading-form">
+      {% csrf_token %}
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="id_slno">Serial Number</label>
+          <input type="text" name="slno" id="id_slno" placeholder="e.g., SL001" required />
+        </div>
+
+        <div class="form-group">
+          <label for="id_quarterno">Quarter Number</label>
+          <input type="text" name="quarterno" id="id_quarterno" placeholder="e.g., Q-1234" required />
+        </div>
+
+        <div class="form-group">
+          <label for="id_meterreading">Meter Reading</label>
+          <input type="number" name="meterreading" id="id_meterreading" placeholder="e.g., 1234.56" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label for="id_submit_option">Submit Option</label>
+          <select name="submit_option" id="id_submit_option">
+            <option value="Monthly">Monthly</option>
+            <option value="Quarterly">Quarterly</option>
+            <option value="Annual">Annual</option>
+          </select>
+        </div>
+
+        <div class="form-group form-group-full">
+          <label for="id_meterimage">Meter Image</label>
+          <div class="file-upload-wrapper">
+            <input type="file" name="meterimage" id="id_meterimage" accept="image/*" required />
+            <div class="file-upload-label">
+              <span class="file-upload-icon">📷</span>
+              <span class="file-upload-text">Click to upload or drag & drop</span>
+              <span class="file-upload-hint">PNG, JPG up to 10MB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <span>Submit Reading</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Set current date
+  const dateEl = document.getElementById('current-date');
+  if (dateEl) {
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  // File upload label
+  const fileInput = document.getElementById('id_meterimage');
+  const fileText = document.querySelector('.file-upload-text');
+  if (fileInput && fileText) {
+    fileInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        fileText.textContent = this.files[0].name;
+        this.closest('.file-upload-wrapper').classList.add('has-file');
+      }
+    });
+  }
+</script>
+{% endblock %}

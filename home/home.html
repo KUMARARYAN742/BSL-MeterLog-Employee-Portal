@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+<!-- ── Hero Section ── -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge animate-fade-in-up">⚡ Employee Portal</div>
+    <h1 class="hero-title animate-fade-in-up delay-1">
+      Welcome to<br/><span class="hero-highlight">Bokaro Steel Plant</span>
+    </h1>
+    <p class="hero-subtitle animate-fade-in-up delay-2">
+      Your integrated digital platform for electric meter reading submissions,
+      employee services, and operational management at SAIL's flagship facility.
+    </p>
+    <div class="hero-actions animate-fade-in-up delay-3">
+      <a href="{% url 'login' %}" class="btn btn-primary">
+        <span>Employee Login</span>
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="{% url 'register' %}" class="btn btn-outline">
+        <span>Create Account</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-indicator">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── Stats Section ── -->
+<section class="stats-section">
+  <div class="stats-container">
+    <div class="stat-card animate-fade-in-up delay-1">
+      <div class="stat-icon">🏭</div>
+      <div class="stat-number" data-target="50">0</div>
+      <div class="stat-suffix">+ Years</div>
+      <div class="stat-label">Of Excellence</div>
+    </div>
+    <div class="stat-card animate-fade-in-up delay-2">
+      <div class="stat-icon">👷</div>
+      <div class="stat-number" data-target="30000">0</div>
+      <div class="stat-suffix">+</div>
+      <div class="stat-label">Employees</div>
+    </div>
+    <div class="stat-card animate-fade-in-up delay-3">
+      <div class="stat-icon">⚙️</div>
+      <div class="stat-number" data-target="4">0</div>
+      <div class="stat-suffix">.5 MT</div>
+      <div class="stat-label">Annual Capacity</div>
+    </div>
+    <div class="stat-card animate-fade-in-up delay-4">
+      <div class="stat-icon">🏠</div>
+      <div class="stat-number" data-target="10000">0</div>
+      <div class="stat-suffix">+</div>
+      <div class="stat-label">Quarters Managed</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features Section ── -->
+<section class="features-section">
+  <div class="features-container">
+    <div class="features-header">
+      <h2 class="section-title">Our Digital Services</h2>
+      <p class="section-subtitle">
+        Streamlining operations with modern tools for every employee.
+      </p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Meter Reading Submission</h3>
+        <p>Submit your quarterly electric meter readings digitally with image proof — fast, paperless, and accurate.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Employee Dashboard</h3>
+        <p>Access your personalized dashboard to view submission history, track status, and manage your account.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗂️</div>
+        <h3>Digital Records</h3>
+        <p>All readings are securely stored with timestamps and images, creating a reliable digital audit trail.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Quick Processing</h3>
+        <p>Submissions are processed instantly — no more queues, no more paperwork, no more delays.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA Section ── -->
+<section class="cta-section">
+  <div class="cta-container">
+    <div class="cta-content">
+      <h2>Ready to get started?</h2>
+      <p>Join thousands of BSL employees already using the digital portal for meter reading submissions.</p>
+      <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+        Create Your Account
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+    <div class="cta-decoration">
+      <div class="cta-circle cta-circle-1"></div>
+      <div class="cta-circle cta-circle-2"></div>
+      <div class="cta-circle cta-circle-3"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Count-up animation for stats
+  function animateCountUp(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    const duration = 2000;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Trigger count-up for stat numbers
+        const statNum = entry.target.querySelector('.stat-number');
+        if (statNum && !statNum.dataset.animated) {
+          statNum.dataset.animated = 'true';
+          animateCountUp(statNum);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.stat-card, .feature-card, .cta-content').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+{% endblock %}
